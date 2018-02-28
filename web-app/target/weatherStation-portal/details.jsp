@@ -189,6 +189,11 @@
                     <strong><%=device.getString("name")%>
                     </strong> Farm Monitor Statistics
                     <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <button class="btn btn-white" data-toggle="modal"
+                                    data-target="#newDeviceModal"> Send Operation
+                            </button>
+                        </li>
                         <li class="dropdown pull-right">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">person</i>
@@ -205,6 +210,40 @@
                 </div>
             </div>
         </nav>
+        <%--Popup modal for adding new device--%>
+        <div class="modal fade" id="newDeviceModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">&times
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel" style="color:cornflowerblue;">
+                            Select Operation</h4>
+                    </div>
+                    <table style="text-align: center;">
+                        <tr>
+                            <td>
+                                <button class="btn btn-white"> Upgrade firmwear
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="btn btn-white"> reboot
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-simple"
+                                data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="content" style="padding-top: 2px;">
             <div id="daterangebar" style="margin-left:35%;margin-top: -4px">
                 <div class="menubutton">
@@ -223,7 +262,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="green">
-                                        <i class="material-icons">invert_colors</i>
+                                        <i class="material-icons">local_gas_station</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Fuel Statistics</p>
@@ -239,7 +278,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="red">
-                                        <i class="material-icons">zoom_out_map</i>
+                                        <i class="material-icons">local_shipping</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Engine Status</p>
@@ -255,7 +294,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="blue">
-                                        <i class="material-icons">forward</i>
+                                        <i class="material-icons">computer</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Load</p>
@@ -329,7 +368,7 @@
                                              id="RealTimesoilmoistureChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Soil Moisture<b> pascal</b></h4>
+                                        <h4 class="title">Soil Moisture<b>%</b></h4>
                                         <p class="category">
 
                                     </div>
@@ -342,7 +381,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card real" id='tractorspeed' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="purple">
+                                    <div class="card-header card-chart" data-background-color="orange">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="RealTimeTractorSpeedChart"></div>
                                     </div>
@@ -361,7 +400,7 @@
 
                             <div class="col-md-4">
                                 <div class="card real" id='raining' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="yellow">
+                                    <div class="card-header card-chart" data-background-color="blue">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="RealTimeRainingChart"></div>
                                     </div>
@@ -379,12 +418,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card real" id='illumination' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="yellow">
+                                    <div class="card-header card-chart" data-background-color="green">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="RealTimeIlluminationChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Illumination <b>Mm per Hour</b></h4>
+                                        <h4 class="title">Illumination <b> Candela</b></h4>
                                         <p class="category">
 
                                     </div>
@@ -397,12 +436,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card real" id='fuelusage' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="yellow">
+                                    <div class="card-header card-chart" data-background-color="red">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="RealTimeFuelUsageChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Fuel Usage <b>Mm per Hour</b></h4>
+                                        <h4 class="title">Fuel Usage <b>%</b></h4>
                                         <p class="category">
 
                                     </div>
@@ -415,12 +454,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card real" id='tractorLoadWeight' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="yellow">
+                                    <div class="card-header card-chart" data-background-color="purple">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="RealTimetractorLoadWeightChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Tractor Load Weight<b>Mm per Hour</b></h4>
+                                        <h4 class="title">Tractor Load Weight<b>%</b></h4>
                                         <p class="category">
 
                                     </div>
@@ -462,7 +501,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card his setHistorical" id='Htractorspeed' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="purple">
+                                    <div class="card-header card-chart" data-background-color="orange">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="HistoricalTractorSpeedChart"></div>
                                     </div>
@@ -476,7 +515,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card his setHistorical" id='Hraining' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="yellow">
+                                    <div class="card-header card-chart" data-background-color="orange">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="HistoricalRainingChart"></div>
                                     </div>
@@ -507,7 +546,7 @@
                                              id="HistoricalSoilMoistureChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Soil Moisture</h4>
+                                        <h4 class="title">Soil Moisture<b>%</b></h4>
                                         <p class="category" id="historicalsoilMoistureLastUpdated">
 
                                     </div>
@@ -515,12 +554,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card his setHistorical" id='Hillumination' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="green">
+                                    <div class="card-header card-chart" data-background-color="purple">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="HistoricalIlluminationChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Illumination</h4>
+                                        <h4 class="title">Illumination<b> Candela</b></h4>
                                         <p class="category" id="historicalilluminationLastUpdated">
 
                                     </div>
@@ -528,12 +567,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card his setHistorical" id='HfuelUsage' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="green">
+                                    <div class="card-header card-chart" data-background-color="blue">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="HistoricalFuelUsageChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Fuel Usage</h4>
+                                        <h4 class="title">Fuel Usage<b>%</b></h4>
                                         <p class="category" id="historicalFuelUsageLastUpdated">
 
                                     </div>
@@ -541,12 +580,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card his setHistorical" id='HtractorLoad' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="green">
+                                    <div class="card-header card-chart" data-background-color="red">
                                         <div class="ct-chart ct-golden-section setheight"
                                              id="HistoricalLoadWeightChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Tractor Load</h4>
+                                        <h4 class="title">Tractor Load<b>%</b></h4>
                                         <p class="category" id="historicalTractorLoadLastUpdated">
                                     </div>
                                 </div>
@@ -776,7 +815,6 @@
 
     function datePickerCallback(startD, endD) {
         var eventsSuccess = function (data) {
-            console.log(data);
             var records = JSON.parse(data);
             analyticsHistory.redrawGraphs(records);
         };
@@ -829,12 +867,12 @@
             $("#fuel_status").html("empty");
         }
         else {
-            $("#fuel_status").html("Okay");
+            $("#fuel_status").html(fuelstatus + "<b>%</b>");
         }
 
 
         //engine status
-        if (engineStatus) {
+        if (!engineStatus) {
             $("#engine_status").html("ON");
         }
         else {
@@ -842,12 +880,16 @@
         }
 
         //load status
-        if (load < 100) {
-            $("#tractorload_status").html("Not Full");
+        if (load === 0) {
+            $("#tractorload_status").html("empty");
+        }
+        else if (load === 100) {
+            $("#tractorload_status").html("FULL");
         }
         else {
-            $("#tractorload_status").html("Full");
+            $("#tractorload_status").html(load + "<b>%</b>");
         }
+
 
     }
 

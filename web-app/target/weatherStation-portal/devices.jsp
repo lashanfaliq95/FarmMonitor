@@ -234,7 +234,7 @@
     var legend = L.control({position: 'topright'});
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>Temperature</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> Humidity </td></tr><tr><td><i class=\"tiny material-icons\" >call_made</i></td><td>Wind Direction</td></tr></table>';
+        div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>Temperature</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> Humidity </td></tr><tr><td><i class=\"tiny material-icons\" >cloud_circle</i></td><td>Raining</td></tr></table>';
         return div;
     };
     legend.addTo(mymap);
@@ -252,7 +252,7 @@
         if (raining == null) {
             raining = 0;
         }
-        var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='farmMonitor" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(temp, 3) + "&#8451</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + humidity + "%</td><td><i class=\"tiny material-icons\" >call_made</i></td><td>" + raining + "&#9900</td></table></div>";
+        var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='farmMonitor" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(temp, 3) + "&#8451</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + humidity + "%</td><td><i class=\"tiny material-icons\" >cloud_circle</i></td><td>" + raining + "<strong>mmpH</strong></td></table></div>";
         popup = new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
         popup.setLatLng(popupLocation);
         popup.setContent(popupContent);
@@ -340,14 +340,14 @@
 
             var myRow;
             if (temperature == null || humidity == null || raining == null) {
-                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">beach_access</i> </div> <div class=\"card-content\"> <p class=\"category\">Station</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
+                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">wallpaper</i> </div> <div class=\"card-content\"> <p class=\"category\">Station</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalTempChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalHumidityChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalrainingChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalrainingAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
             }
             else {
-                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">beach_access</i> </div> <div class=\"card-content\"> <p class=\"category\">Station</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
+                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">nature</i> </div> <div class=\"card-content\"> <p class=\"category\">Station</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalTempChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + ( precise_round(temperature, 3)) + "&#8451</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalHumidityChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (humidity) + "%</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalrainingChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (raining) + "<strong>mm per Hour</strong></h4><p class=\"category\" id=\"historicalrainingAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"

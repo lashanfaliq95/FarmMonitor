@@ -262,7 +262,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="green">
-                                        <i class="material-icons">invert_colors</i>
+                                        <i class="material-icons">local_gas_station</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Fuel Statistics</p>
@@ -278,7 +278,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="red">
-                                        <i class="material-icons">zoom_out_map</i>
+                                        <i class="material-icons">local_shipping</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Engine Status</p>
@@ -294,7 +294,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="blue">
-                                        <i class="material-icons">forward</i>
+                                        <i class="material-icons">computer</i>
                                     </div>
                                     <div class="card-content">
                                         <p class="category">Tractor Load</p>
@@ -815,7 +815,6 @@
 
     function datePickerCallback(startD, endD) {
         var eventsSuccess = function (data) {
-            console.log(data);
             var records = JSON.parse(data);
             analyticsHistory.redrawGraphs(records);
         };
