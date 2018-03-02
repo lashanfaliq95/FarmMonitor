@@ -24,8 +24,8 @@ analyticsHistory= {
     historicalHumidSeries: [0],
     historicalWindDirLabel: ['0s'],
     historicalWindDirSeries: [0],
-    historicalDewptfLabel: ['0s'],
-    historicalDewptfSeries: [0],
+    historicalengineTempLabel: ['0s'],
+    historicalengineTempSeries: [0],
     historicalWindChillLabel: ['0s'],
     historicalWindChillSeries: [0],
     historicalTractorSpeedLabel: ['0s'],
@@ -58,7 +58,7 @@ analyticsHistory= {
     historicalIndoorTemp :{},
     historicalHumid: {},
     historicalWindDir: {},
-    historicalDewptf: {},
+    historicalengineTemp: {},
     historicalWindChill : {},
     historicalTractorSpeed:{},
     historicalWindGust :{},
@@ -132,21 +132,21 @@ analyticsHistory= {
         md.startAnimationForLineChart(analyticsHistory.historicalHumid);
 
 
-        /* ----------==========     Historical Dew point Chart initialization    ==========---------- */
-        dataHistoricalDewptfChart = {
-            labels: analyticsHistory.historicalDewptfLabel,
+        /* ----------==========     Historical Engine Temperature Chart initialization    ==========---------- */
+        dataHistoricalengineTempChart = {
+            labels: analyticsHistory.historicalengineTempLabel,
             series: [
-                analyticsHistory.historicalDewptfSeries
+                analyticsHistory.historicalengineTempSeries
             ]
         };
 
-        optionsHistoricalDewptfChart = {
+        optionsHistoricalengineTempChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
                 tension: 0
             }),
             showArea: true,
-            low: -50,
-            high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better
+            low: -10,
+            high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better
                       // look
             chartPadding: {
                 top: 0,
@@ -156,9 +156,9 @@ analyticsHistory= {
             }
         };
 
-        analyticsHistory.historicalDewptf =
-            new Chartist.Line('#HistoricalDewPointChart', dataHistoricalDewptfChart, optionsHistoricalDewptfChart);
-        md.startAnimationForLineChart(analyticsHistory.historicalDewptf);
+        analyticsHistory.historicalengineTemp =
+            new Chartist.Line('#HistoricalEngineTempChart', dataHistoricalengineTempChart, optionsHistoricalengineTempChart);
+        md.startAnimationForLineChart(analyticsHistory.historicalengineTemp);
 
         /* ----------==========     Historical tractor speed Chart initialization    ==========---------- */
         dataHistoricalTractorSpeedChart = {
@@ -327,10 +327,6 @@ analyticsHistory= {
         analyticsHistory.historicalIllumination =
             new Chartist.Line('#HistoricalIlluminationChart', dataHistoricalIlluminationChart, optionsHistoricalIlluminationChart);
         md.startAnimationForLineChart(analyticsHistory.historicalIllumination);
-
-
-
-
     },
 
     timeDifference: function (current, previous) {
@@ -360,7 +356,7 @@ analyticsHistory= {
     updateGraphs: function () {
         analyticsHistory.historicalTemp.update();
         analyticsHistory.historicalHumid.update();
-        analyticsHistory.historicalDewptf.update();
+        analyticsHistory.historicalengineTemp.update();
         analyticsHistory.historicalTractorSpeed.update();
         analyticsHistory.historicalSoilMoisture.update();
         analyticsHistory.historicalRaining.update();
@@ -388,8 +384,8 @@ analyticsHistory= {
             analyticsHistory.historicalTempSeries.length = 0;
             analyticsHistory.historicalHumidLabel.length = 0;
             analyticsHistory.historicalHumidSeries.length = 0;
-            analyticsHistory.historicalDewptfLabel.length = 0;
-            analyticsHistory.historicalDewptfSeries.length = 0;
+            analyticsHistory.historicalengineTempLabel.length = 0;
+            analyticsHistory.historicalengineTempSeries.length = 0;
             analyticsHistory.historicalTractorSpeedLabel.length = 0;
             analyticsHistory.historicalTractorSpeedSeries.length = 0;
             analyticsHistory.historicalRainingLabel.length = 0;
@@ -410,12 +406,12 @@ analyticsHistory= {
                 var dataPoint=record.values;
                 var temperature = dataPoint.temperature;
                 var humidity = dataPoint.humidity;
-                var dewptf=dataPoint.dewpoint;
+                var engineTemp = dataPoint.EngineTemp;
                 var TractorSpeedmph=dataPoint.tractorSpeed;
                 var rainin=dataPoint.raining;
                 var SoilMoisture=dataPoint.soilMoisture;
-                var Illumination=dataPoint.Illumination;
-                var loadWeight=dataPoint.tractorLoadWeight;
+                var Illumination = dataPoint.illumination;
+                var loadWeight = dataPoint.loadWeight;
                 var fuelusage=dataPoint.fuelUsage;
 
                 if (temperature)
@@ -423,8 +419,8 @@ analyticsHistory= {
 
                 if (humidity)
                     sumHumid += humidity;
-                if(dewptf)
-                    sumDewpt += dewptf;
+                if (engineTemp)
+                    sumDewpt += engineTemp;
 
                 if(TractorSpeedmph)
                     sumTractorSpeed +=TractorSpeedmph;
@@ -457,7 +453,7 @@ analyticsHistory= {
 
                     $("#historicalTempAlert").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgTemp.toFixed(2) + " </span>average Temperature.");
                     $("#historicalHumidAlert").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgHumid.toFixed(2) + " </span> average Humidity.");
-                    $("#historicaldewptfLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgDewpltf.toFixed(2) + " </span>average Dew point forecast.");
+                    $("#historicalengineTempLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgDewpltf.toFixed(2) + " </span>average Dew point forecast.");
                      $("#historicaltractorSpeedLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgTractorSpeed.toFixed(2) + " </span>average Wind Speed.");
                      $("#historicalrainingLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgRaining.toFixed(2) + " </span>average Raining.");
                      $("#historicalFuelUsageLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgFuelUsage.toFixed(2) + " </span>average Daily Raining.");
@@ -474,8 +470,8 @@ analyticsHistory= {
                 analyticsHistory.historicalHumidLabel.push(sinceText);
                 analyticsHistory.historicalHumidSeries.push(humidity);
 
-                analyticsHistory.historicalDewptfLabel.push(sinceText);
-                analyticsHistory.historicalDewptfSeries.push(dewptf);
+                analyticsHistory.historicalengineTempLabel.push(sinceText);
+                analyticsHistory.historicalengineTempSeries.push(engineTemp);
 
                 analyticsHistory.historicalTractorSpeedLabel.push(sinceText);
                 analyticsHistory.historicalTractorSpeedSeries.push(TractorSpeedmph);
@@ -499,7 +495,7 @@ analyticsHistory= {
 
                 analyticsHistory.historicalTemp.update();
                 analyticsHistory.historicalHumid.update();
-                analyticsHistory.historicalDewptf.update();
+                analyticsHistory.historicalengineTemp.update();
                 analyticsHistory.historicalTractorSpeed.update();
                 analyticsHistory.historicalSoilMoisture.update();
                 analyticsHistory.historicalRaining.update();
@@ -517,8 +513,8 @@ analyticsHistory= {
                 analyticsHistory.historicalHumidSeries= [0],
                 analyticsHistory.historicalWindDirLabel= ['0s'],
                 analyticsHistory.historicalWindDirSeries= [0],
-                analyticsHistory.historicalDewptfLabel= ['0s'],
-                analyticsHistory.historicalDewptfSeries= [0],
+                    analyticsHistory.historicalengineTempLabel = ['0s'],
+                    analyticsHistory.historicalengineTempSeries = [0],
                 analyticsHistory.historicalWindChillLabel= ['0s'],
                 analyticsHistory.historicalWindChillSeries= [0],
                 analyticsHistory.historicalTractorSpeedLabel= ['0s'],
@@ -558,10 +554,10 @@ analyticsHistory= {
                     analyticsHistory.historicalHumidSeries
                 ]
             });
-            analyticsHistory.historicalDewptf.update({
-                labels: analyticsHistory.historicalDewptfLabel,
+            analyticsHistory.historicalengineTemp.update({
+                labels: analyticsHistory.historicalengineTempLabel,
                 series: [
-                    analyticsHistory.historicalDewptfSeries
+                    analyticsHistory.historicalengineTempSeries
                 ]
             });
             analyticsHistory.historicalTractorSpeed.update({

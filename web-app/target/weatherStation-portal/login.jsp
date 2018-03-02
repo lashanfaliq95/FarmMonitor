@@ -36,8 +36,8 @@
 <nav class="navbar navbar-transparent navbar-absolute">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand"><h4 style="margin-left: 300px;font-size: 3em"><strong>FARM</strong>MONITOR</h4></a>
+        <div class="navbar-header" style=" margin-left: 30%;">
+            <a class="navbar-brand"><h4 style="font-size: 3em"><strong>FARM</strong>MONITOR</h4></a>
         </div>
     </div>
 </nav>

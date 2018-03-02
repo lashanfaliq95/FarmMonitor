@@ -90,29 +90,29 @@ realtimeAnalytics = {
         var realtimeHumid = new Chartist.Line('#RealTimeHumidityChart', dataRealtimeHumidChart, optionsRealtimeHumidChart);
         md.startAnimationForLineChart(realtimeHumid);
 
-        /* ----------==========     Realtime dew point forecast Chart initialization    ==========---------- */
-        var realtimedewptfLabelRef = [new Date()];
-        var realtimedewptfLabel = ['0s'];
-        var realtimedewptfSeries = [0];
+        /* ----------==========     Realtime Engine temperature forecast Chart initialization    ==========---------- */
+        var realtimeengineTempLabelRef = [new Date()];
+        var realtimeengineTempLabel = ['0s'];
+        var realtimeengineTempSeries = [0];
 
-        realtimeAnalytics.createLiFo(realtimedewptfLabelRef, 10);
-        realtimeAnalytics.createLiFo(realtimedewptfLabel, 10);
-        realtimeAnalytics.createLiFo(realtimedewptfSeries, 10);
+        realtimeAnalytics.createLiFo(realtimeengineTempLabelRef, 10);
+        realtimeAnalytics.createLiFo(realtimeengineTempLabel, 10);
+        realtimeAnalytics.createLiFo(realtimeengineTempSeries, 10);
 
-        dataRealtimedewptfChart = {
-            labels: realtimedewptfLabel,
+        dataRealtimeengineTempChart = {
+            labels: realtimeengineTempLabel,
             series: [
-                realtimedewptfSeries
+                realtimeengineTempSeries
             ]
         };
 
-        optionsRealtimedewptfChart = {
+        optionsRealtimeengineTempChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
                 tension: 0
             }),
             showArea: true,
-            low: -50,
-            high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+            low: -10,
+            high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
             chartPadding: {
                 top: 0,
                 right: 0,
@@ -121,8 +121,8 @@ realtimeAnalytics = {
             }
         };
 
-        var realtimedewptf = new Chartist.Line('#RealTimeDewPointChart', dataRealtimedewptfChart, optionsRealtimedewptfChart);
-        md.startAnimationForLineChart(realtimedewptf);
+        var realtimeengineTemp = new Chartist.Line('#RealTimeEngineTempChart', dataRealtimeengineTempChart, optionsRealtimeengineTempChart);
+        md.startAnimationForLineChart(realtimeengineTemp);
 
         /* ----------==========     Realtime tractor speed Chart initialization    ==========---------- */
         var realtimetractorspeedmphLabelRef = [new Date()];
@@ -360,14 +360,14 @@ realtimeAnalytics = {
                     var dataPoint = JSON.parse(data).event.payloadData;
                     var temperature = dataPoint.temperature;
                     var humidity = dataPoint.humidity;
-                    var dewpoint = dataPoint.dewpoint;
+                    var dewpoint = dataPoint.EngineTemp;
                     var rainin = dataPoint.raining;
                     var tractorSpeed = dataPoint.tractorSpeed;
-                    var tractorLoadWeight = dataPoint.tractorLoadWeight;
+                    var tractorLoadWeight = dataPoint.loadWeight;
                     var soilMoisture = dataPoint.soilMoisture;
-                    var Illumination = dataPoint.Illumination;
+                    var Illumination = dataPoint.illumination;
                     var fuelUsage = dataPoint.fuelUsage;
-                    var engineIdlingstatus = dataPoint.engineIdlingstatus;
+                    var engineIdlingstatus = dataPoint.engineidle;
 
                     var currentTime = new Date();
                     var sinceText = timeDifference(currentTime, new Date(dataPoint.timeStamp), false) + " ago";
@@ -388,11 +388,11 @@ realtimeAnalytics = {
                     realtimeHumidSeries.push(humidity);
                     $("#realtimeHumidLastUpdated").html(lastUpdatedText);
 
-                    realtimedewptfLabel.push('0s');
-                    realtimedewptfLabelRef.push(currentTime);
-                    realtimeAnalytics.calcTimeDiff(realtimedewptfLabel, realtimedewptfLabelRef);
-                    realtimedewptfSeries.push(dewpoint);
-                    $("#realtimedewptfLastUpdated").html(lastUpdatedText);
+                    realtimeengineTempLabel.push('0s');
+                    realtimeengineTempLabelRef.push(currentTime);
+                    realtimeAnalytics.calcTimeDiff(realtimeengineTempLabel, realtimeengineTempLabelRef);
+                    realtimeengineTempSeries.push(dewpoint);
+                    $("#realtimeengineTempLastUpdated").html(lastUpdatedText);
 
                     realtimetractorspeedmphLabel.push('0s');
                     realtimetractorspeedmphLabelRef.push(currentTime);
@@ -450,7 +450,7 @@ realtimeAnalytics = {
         function updateGraphs() {
             realtimeTemp.update();
             realtimeHumid.update();
-            realtimedewptf.update();
+            realtimeengineTemp.update();
             realtimetractorspeedmph.update();
             realtimeraining.update();
             realtimefuelusage.update();

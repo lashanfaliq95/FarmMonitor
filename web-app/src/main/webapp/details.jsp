@@ -55,7 +55,7 @@
     HttpPost invokerEndpoint = new HttpPost(invokerURI);
     invokerEndpoint.setHeader("Cookie", cookie);
 
-    StringEntity entity = new StringEntity("uri=/devices/farmMonitor/" + id + "&method=get",
+    StringEntity entity = new StringEntity("uri=/devices/TractorHub/" + id + "&method=get",
             ContentType.APPLICATION_FORM_URLENCODED);
     invokerEndpoint.setEntity(entity);
 
@@ -101,7 +101,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Weather Station details</title>
+    <title>Farm Manager</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
     <!-- Bootstrap core CSS     -->
@@ -133,7 +133,7 @@
 -->
         <div class="logo list-inline">
             <a href="./devices.jsp" class="simple-text">
-                <strong>Farm</strong>Monitor
+                <strong>Farm</strong>Portal
             </a>
         </div>
         <div class="sidebar-wrapper">
@@ -187,7 +187,7 @@
                         </li>
                     </ul>
                     <strong><%=device.getString("name")%>
-                    </strong> Farm Monitor Statistics
+                    </strong> Tractor Statistics
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <button class="btn btn-white" data-toggle="modal"
@@ -225,13 +225,20 @@
                     <table style="text-align: center;">
                         <tr>
                             <td>
-                                <button class="btn btn-white"> Upgrade firmwear
+                                <button class="btn btn-white"> Plot Path
                                 </button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button class="btn btn-white"> reboot
+                                <button class="btn btn-white"> Send Execution Plan
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button class="btn btn-white"> Control Engine
                                 </button>
                             </td>
                         </tr>
@@ -344,18 +351,18 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card real" id='dewpoint' onclick=redirect(this)>
+                                <div class="card real" id='EngineTemp' onclick=redirect(this)>
                                     <div class="card-header card-chart" data-background-color="purple">
                                         <div class="ct-chart ct-golden-section setheight"
-                                             id="RealTimeDewPointChart"></div>
+                                             id="RealTimeEngineTempChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Dew Point&#8451</h4>
+                                        <h4 class="title">Engine Temperature&#8451</h4>
                                         <p class="category">
 
                                     </div>
                                     <div class="card-footer">
-                                        <div class="stats" id="realtimedewptfLastUpdated">
+                                        <div class="stats" id="realtimeengineTempLastUpdated">
                                             <i class="material-icons">access_time</i> Yet to be updated
                                         </div>
                                     </div>
@@ -526,14 +533,14 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card his setHistorical" id='Hdewpoint' onclick=redirect(this)>
+                                <div class="card his setHistorical" id='HEngineTemp' onclick=redirect(this)>
                                     <div class="card-header card-chart" data-background-color="purple">
                                         <div class="ct-chart ct-golden-section setheight"
-                                             id="HistoricalDewPointChart"></div>
+                                             id="HistoricalEngineTempChart"></div>
                                     </div>
                                     <div class="card-content">
-                                        <h4 class="title">Dew Point&#8451</h4>
-                                        <p class="category" id="historicaldewptfLastUpdated">
+                                        <h4 class="title">Engine Temperature&#8451</h4>
+                                        <p class="category" id="historicalengineTempLastUpdated">
 
                                     </div>
 
@@ -727,15 +734,13 @@
     });
 
     $(document).ready(function () {
-
-
         $(document).ready(function () {
-            var wsStatsEndpoint = "<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>/secured-websocket/iot.per.device.stream.carbon.super.farmMonitor/1.0.0?"
-                + "deviceId=<%=id%>&deviceType=farmMonitor&websocketToken=<%=request.getSession(false).getAttribute(LoginController.ATTR_ACCESS_TOKEN)%>";
+            var wsStatsEndpoint = "<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>/secured-websocket/iot.per.device.stream.carbon.super.TractorHub/1.0.0?"
+                + "deviceId=<%=id%>&deviceType=TractorHub&websocketToken=<%=request.getSession(false).getAttribute(LoginController.ATTR_ACCESS_TOKEN)%>";
             realtimeGraphRefresh(wsStatsEndpoint);
 
-            var wsAlertEndpoint = "<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>/secured-websocket/iot.per.device.stream.carbon.super.farmMonitor.alert/1.0.0?"
-                + "deviceId=<%=id%>&deviceType=farmMonitor&websocketToken=<%=request.getSession(false).getAttribute(LoginController.ATTR_ACCESS_TOKEN)%>";
+            var wsAlertEndpoint = "<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>/secured-websocket/iot.per.device.stream.carbon.super.TractorHub.alert/1.0.0?"
+                + "deviceId=<%=id%>&deviceType=TractorHub&websocketToken=<%=request.getSession(false).getAttribute(LoginController.ATTR_ACCESS_TOKEN)%>";
             displayAlerts(wsAlertEndpoint);
         });
     });
@@ -826,7 +831,7 @@
             type: "POST",
             url: "invoker/execute",
             data: {
-                "uri": "/events/farmMonitor/<%=id%>?offset=" + index + "&limit=" + length + "&from=" + new Date(
+                "uri": "/events/TractorHub/<%=id%>?offset=" + index + "&limit=" + length + "&from=" + new Date(
                     startD.format('YYYY-MM-DD H:mm:ss')).getTime() + "&to=" + new Date(
                     endD.format('YYYY-MM-DD H:mm:ss')).getTime(),
                 "method": "get"
@@ -900,8 +905,8 @@
             lastKnown = record;
             var sinceText = timeDifference(new Date(), new Date(record.timestamp), false) + " ago";
             var fuelstatus = record.values.fuelUsage;
-            var engineStatus = record.values.engineIdlingstatus;
-            var load = record.values.tractorLoadWeight;
+            var engineStatus = record.values.engineidle;
+            var load = record.values.loadWeight;
             updateStatusCards(sinceText, fuelstatus, engineStatus, load);
         } else {
             //temperature status
@@ -921,7 +926,7 @@
         type: "POST",
         url: "invoker/execute",
         data: {
-            "uri": "/events/last-known/farmMonitor/<%=id%>",
+            "uri": "/events/last-known/TractorHub/<%=id%>",
             "method": "get"
         },
         success: lastKnownSuccess
