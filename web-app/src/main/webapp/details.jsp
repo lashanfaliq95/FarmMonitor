@@ -269,14 +269,14 @@
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="green">
-                                        <i class="material-icons">drafts</i>
+                                        <i class="material-icons">invert_colors</i>
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">Alert</p>
-                                        <h3 class="title" id="alert_status">Yet to be updated</h3>
+                                        <p class="category">Raining</p>
+                                        <h3 class="title" id="rain_alert">Yet to be updated</h3>
                                     </div>
                                     <div class="card-footer">
-                                        <div class="stats" id="alert_status_alert">
+                                        <div class="stats" id="rain_status_alert">
                                             <i class="material-icons">update</i> Just Updated
                                         </div>
                                     </div>
@@ -420,25 +420,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
-                                <div class="card real" id='raining' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="blue">
-                                        <div class="ct-chart ct-golden-section setheight"
-                                             id="RealTimeRainingChart"></div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h4 class="title">Raining <b>Mm per Hour</b></h4>
-                                        <p class="category">
-
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="stats" id="realtimerainingLastUpdated">
-                                            <i class="material-icons">access_time</i> Yet to be updated
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-4">
                                 <div class="card real" id='illumination' onclick=redirect(this)>
                                     <div class="card-header card-chart" data-background-color="green">
@@ -534,18 +515,6 @@
 
                                     </div>
 
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card his setHistorical" id='Hraining' onclick=redirect(this)>
-                                    <div class="card-header card-chart" data-background-color="orange">
-                                        <div class="ct-chart ct-golden-section setheight"
-                                             id="HistoricalRainingChart"></div>
-                                    </div>
-                                    <div class="card-content">
-                                        <h4 class="title">Raining <b>Mm per Hour</b></h4>
-                                        <p class="category" id="historicalrainingLastUpdated">
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -841,7 +810,7 @@
         };
 
         var index = 0;
-        var length = 50;
+        var length = 30;
 
         $.ajax({
             type: "POST",
@@ -879,15 +848,20 @@
 
     //update the card details
     function updateStatusCards(sincetext, alert, fuelstatus, engineStatus, load) {
-        //alert status
-        $("#alert_status").html(alert);
+        //engine status
+        if (alert) {
+            $("#rain_alert").html("TRUE");
+        }
+        else {
+            $("#rain_alert").html("FALSE");
+        }
 
         //fuel status
         if (fuelstatus === 0) {
             $("#fuel_status").html("FULL");
         }
         else if (fuelstatus === 100) {
-            $("#fuel_status").html("empty");
+            $("#fuel_status").html("EMPTY");
         }
         else {
             $("#fuel_status").html(fuelstatus + "<b>%</b>");
@@ -904,7 +878,7 @@
 
         //load status
         if (load === 0) {
-            $("#tractorload_status").html("empty");
+            $("#tractorload_status").html("EMPTY");
         }
         else if (load === 100) {
             $("#tractorload_status").html("FULL");
@@ -922,15 +896,15 @@
         if (record) {
             lastKnown = record;
             var sinceText = timeDifference(new Date(), new Date(record.timestamp), false) + " ago";
-            var alert = record.values.alerts;
+            var alert = record.values.raining;
             var fuelstatus = record.values.fuelUsage;
             var engineStatus = record.values.engineidle;
             var load = record.values.loadWeight;
             updateStatusCards(sinceText, alert, fuelstatus, engineStatus, load);
         } else {
             //alert status
-            $("#alert_status").html("Unknown");
-            $("#alert_status_alert").parent().remove();
+            $("#rain_alert").html("Unknown");
+            $("#rain_status_alert").parent().remove();
 
             //temperature status
             $("#fuel_status").html("Unknown");

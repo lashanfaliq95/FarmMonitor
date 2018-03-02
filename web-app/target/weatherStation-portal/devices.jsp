@@ -156,7 +156,7 @@
                                             <th>Device Name</th>
                                             <th>Temperature</th>
                                             <th>Humidity</th>
-                                            <th>Raining</th>
+                                            <th>Soil Moisture</th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -212,13 +212,13 @@
     var deviceCount;
     var temp = [];
     var humid = [];
-    var raining = [];
+    var soilMoisture = [];
     historicalTempLabel = ['0s']
     historicalTempSeries = [0]
     historicalHumidLabel = ['0s']
     historicalHumidSeries = [0]
-    historicalrainingLabel = ['0s']
-    historicalrainingSeries = [0]
+    historicalsoilMoistureLabel = ['0s']
+    historicalsoilMoistureSeries = [0]
 
     //initialising the map view tab
     var mymap = L.map('mapid').setView([7.9, 80.56274], 8);
@@ -234,14 +234,14 @@
     var legend = L.control({position: 'topright'});
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>Temperature</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> Humidity </td></tr><tr><td><i class=\"tiny material-icons\" >cloud_circle</i></td><td>Raining</td></tr></table>';
+        div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>Temperature</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> Humidity </td></tr><tr><td><i class=\"tiny material-icons\" >gradient</i></td><td>Soil Moisture</td></tr></table>';
         return div;
     };
     legend.addTo(mymap);
 
 
     //add devices to map as popups
-    function addToMapPopoup(lat, long, devName, devId, temp, humidity, raining) {
+    function addToMapPopoup(lat, long, devName, devId, temp, humidity, soilMoisture) {
         var popupLocation = new L.LatLng(lat, long);
         if (temp == null) {
             temp = 0;
@@ -249,10 +249,10 @@
         if (humidity == null) {
             humidity = 0;
         }
-        if (raining == null) {
-            raining = 0;
+        if (soilMoisture == null) {
+            soilMoisture = 0;
         }
-        var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='TractorHub" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(temp, 3) + "&#8451</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + humidity + "%</td><td><i class=\"tiny material-icons\" >cloud_circle</i></td><td>" + raining + "<strong>mmpH</strong></td></table></div>";
+        var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='TractorHub" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(temp, 3) + "&#8451</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + humidity + "%</td><td><i class=\"tiny material-icons\" >gradient</i></td><td>" + soilMoisture + "<strong>%</strong></td></table></div>";
         popup = new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
         popup.setLatLng(popupLocation);
         popup.setContent(popupContent);
@@ -330,27 +330,27 @@
 
             var temperature = null;
             var humidity = null;
-            var raining = null;
+            var soilMoisture = null;
 
             if (record) {
                 temperature = record.values.temperature;
                 humidity = record.values.humidity;
-                raining = record.values.raining;
+                soilMoisture = record.values.soilMoisture;
             }
 
             var myRow;
-            if (temperature == null || humidity == null || raining == null) {
+            if (temperature == null || humidity == null || soilMoisture == null) {
                 myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">nature</i> </div> <div class=\"card-content\"> <p class=\"category\">Farm</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalTempChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalHumidityChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
-                    + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalrainingChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalrainingAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
+                    + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalsoilMoistureChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalsoilMoistureAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
             }
             else {
                 myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">nature</i> </div> <div class=\"card-content\"> <p class=\"category\">Farm</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalTempChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + ( precise_round(temperature, 3)) + "&#8451</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalHumidityChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (humidity) + "%</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
-                    + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalrainingChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (raining) + "<strong>mm per Hour</strong></h4><p class=\"category\" id=\"historicalrainingAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
+                    + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalsoilMoistureChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (soilMoisture) + "<strong>%</strong></h4><p class=\"category\" id=\"historicalsoilMoistureAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
             }
             rows.push(myRow);
@@ -427,12 +427,12 @@
 
             var temperature = null;
             var humidity = null;
-            var raining = null;
+            var soilMoisture = null;
 
             if (record) {
                 temperature = record.values.temperature;
                 humidity = record.values.humidity;
-                raining = record.values.raining;
+                soilMoisture = record.values.soilMoisture;
             }
 
             //To fix the issue of adding devices with null or undefined location values to map
@@ -440,7 +440,7 @@
                 console.log('undefined lat' + lat + ' long ' + long);
             }
             else {
-                addToMapPopoup(lat, long, dev.deviceIdentifier, dev.id, temperature, humidity, raining);
+                addToMapPopoup(lat, long, dev.deviceIdentifier, dev.id, temperature, humidity, soilMoisture);
             }
 
         };
@@ -552,15 +552,15 @@
     function initDashboardPageCharts(deviceId) {
         temp[deviceId] = {};
         humid[deviceId] = {};
-        raining[deviceId] = {};
+        soilMoisture[deviceId] = {};
 
         //use this to get different variables for different devices
         this["historicalTempLabel" + deviceId] = ['0s']
         this["historicalTempSeries" + deviceId] = [0]
         this["historicalHumidLabel" + deviceId] = ['0s']
         this["historicalHumidSeries" + deviceId] = [0]
-        this["historicalrainingLabel" + deviceId] = ['0s']
-        this["historicalrainingSeries" + deviceId] = [0]
+        this["historicalsoilMoistureLabel" + deviceId] = ['0s']
+        this["historicalsoilMoistureSeries" + deviceId] = [0]
 
         /* ----------==========      Temperature Chart initialization    ==========---------- */
         dataHistoricalTempChart = {
@@ -619,14 +619,14 @@
         md.startAnimationForLineChart(humid[deviceId]);
 
         /* ----------==========      Wind direction Chart initialization    ==========---------- */
-        dataHistoricalrainingChart = {
-            labels: this["historicalrainingLabel" + deviceId],
+        dataHistoricalsoilMoistureChart = {
+            labels: this["historicalsoilMoistureLabel" + deviceId],
             series: [
-                this["historicalrainingSeries" + deviceId]
+                this["historicalsoilMoistureSeries" + deviceId]
             ]
         };
 
-        optionsHistoricalrainingChart = {
+        optionsHistoricalsoilMoistureChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
                 tension: 0
             }),
@@ -642,9 +642,9 @@
             }
         };
 
-        raining[deviceId] =
-            new Chartist.Line('#HistoricalrainingChart' + deviceId, dataHistoricalrainingChart, optionsHistoricalrainingChart);
-        md.startAnimationForLineChart(raining[deviceId]);
+        soilMoisture[deviceId] =
+            new Chartist.Line('#HistoricalsoilMoistureChart' + deviceId, dataHistoricalsoilMoistureChart, optionsHistoricalsoilMoistureChart);
+        md.startAnimationForLineChart(soilMoisture[deviceId]);
 
 
     }
@@ -677,7 +677,7 @@
 
         var sumTemp = 0;
         var sumHumid = 0;
-        var sumraining = 0;
+        var sumsoilMoisture = 0;
 
 
         if (events.count > 0) {
@@ -687,10 +687,10 @@
             this["historicalTempSeries" + deviceId].length = 0;
             this["historicalHumidLabel" + deviceId].length = 0;
             this["historicalHumidSeries" + deviceId].length = 0;
-            this["historicalrainingLabel" + deviceId].length = 0;
-            this["historicalrainingSeries" + deviceId].length = 0;
+            this["historicalsoilMoistureLabel" + deviceId].length = 0;
+            this["historicalsoilMoistureSeries" + deviceId].length = 0;
 
-            for (var i = events.records.length-1; i >=0 ; i--) { //invert the results so final record comes last
+            for (var i = events.records.length - 1; i >= 0; i--) { //invert the results so final record comes last
 
                 var record = events.records[i];
 
@@ -698,7 +698,7 @@
                 var dataPoint = record.values;
                 var temperature = dataPoint.temperature;
                 var humidity = dataPoint.humidity;
-                var rain = dataPoint.raining;
+                var rain = dataPoint.soilMoisture;
 
                 if (temperature)
                     sumTemp += temperature;
@@ -706,8 +706,8 @@
                 if (humidity)
                     sumHumid += humidity;
 
-                if (raining)
-                    sumraining += raining;
+                if (soilMoisture)
+                    sumsoilMoisture += soilMoisture;
 
                 this["historicalTempLabel" + deviceId].push(sinceText);
                 this["historicalTempSeries" + deviceId].push(temperature);
@@ -715,12 +715,12 @@
                 this["historicalHumidLabel" + deviceId].push(sinceText);
                 this["historicalHumidSeries" + deviceId].push(humidity);
 
-                this["historicalrainingLabel" + deviceId].push(sinceText);
-                this["historicalrainingSeries" + deviceId].push(rain);
+                this["historicalsoilMoistureLabel" + deviceId].push(sinceText);
+                this["historicalsoilMoistureSeries" + deviceId].push(rain);
 
                 temp[deviceId].update();
                 humid[deviceId].update();
-                raining[deviceId].update();
+                soilMoisture[deviceId].update();
 
 
             }
@@ -729,7 +729,7 @@
 
             temp[deviceId].update();
             humid[deviceId].update();
-            raining[deviceId].update();
+            soilMoisture[deviceId].update();
 
 
         }

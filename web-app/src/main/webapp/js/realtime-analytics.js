@@ -158,39 +158,6 @@ realtimeAnalytics = {
         var realtimetractorspeedmph = new Chartist.Line('#RealTimeTractorSpeedChart', dataRealtimetractorspeedmphChart, optionsRealtimetractorspeedmphChart);
         md.startAnimationForLineChart(realtimetractorspeedmph);
 
-        /* ----------==========     Realtime raining Chart initialization    ==========---------- */
-        var realtimerainingLabelRef = [new Date()];
-        var realtimerainingLabel = ['0s'];
-        var realtimerainingSeries = [0];
-
-        realtimeAnalytics.createLiFo(realtimerainingLabelRef, 10);
-        realtimeAnalytics.createLiFo(realtimerainingLabel, 10);
-        realtimeAnalytics.createLiFo(realtimerainingSeries, 10);
-
-        dataRealtimerainingChart = {
-            labels: realtimerainingLabel,
-            series: [
-                realtimerainingSeries
-            ]
-        };
-
-        optionsRealtimerainingChart = {
-            lineSmooth: Chartist.Interpolation.cardinal({
-                tension: 0
-            }),
-            showArea: true,
-            low: 0,
-            high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-            chartPadding: {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
-            }
-        };
-
-        var realtimeraining = new Chartist.Line('#RealTimeRainingChart', dataRealtimerainingChart, optionsRealtimerainingChart);
-        md.startAnimationForLineChart(realtimeraining);
 
         /* ----------==========     Realtime soil moisture Chart initialization    ==========---------- */
         var realtimesoilmoistureLabelRef = [new Date()];
@@ -360,14 +327,13 @@ realtimeAnalytics = {
                     var temperature = dataPoint.temperature;
                     var humidity = dataPoint.humidity;
                     var dewpoint = dataPoint.EngineTemp;
-                    var rainin = dataPoint.raining;
                     var tractorSpeed = dataPoint.tractorSpeed;
                     var tractorLoadWeight = dataPoint.loadWeight;
                     var soilMoisture = dataPoint.soilMoisture;
                     var Illumination = dataPoint.illumination;
                     var fuelUsage = dataPoint.fuelUsage;
                     var engineIdlingstatus = dataPoint.engineidle;
-                    var alert = dataPoint.alerts;
+                    var alert = dataPoint.raining;
 
                     var currentTime = new Date();
                     var sinceText = timeDifference(currentTime, new Date(dataPoint.timeStamp), false) + " ago";
@@ -412,11 +378,6 @@ realtimeAnalytics = {
                     realtimeilluminationSeries.push(Illumination);
                     $("#realtimeIlluminationLastUpdated").html(lastUpdatedText);
 
-                    realtimerainingLabel.push('0s');
-                    realtimerainingLabelRef.push(currentTime);
-                    realtimeAnalytics.calcTimeDiff(realtimerainingLabel, realtimerainingLabelRef);
-                    realtimerainingSeries.push(rainin);
-                    $("#realtimerainingLastUpdated").html(lastUpdatedText);
 
                     realtimeloadweightLabel.push('0s');
                     realtimeloadweightLabelRef.push(currentTime);
@@ -452,7 +413,6 @@ realtimeAnalytics = {
             realtimeHumid.update();
             realtimeengineTemp.update();
             realtimetractorspeedmph.update();
-            realtimeraining.update();
             realtimefuelusage.update();
             realtimeloadweight.update();
             realtimesoilmoisture.update();
