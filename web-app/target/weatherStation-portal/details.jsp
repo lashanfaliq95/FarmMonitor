@@ -101,7 +101,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>Farm Manager</title>
+    <title>Tractor Hub</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
     <!-- Bootstrap core CSS     -->
@@ -187,7 +187,7 @@
                         </li>
                     </ul>
                     <strong><%=device.getString("name")%>
-                    </strong> Tractor Statistics
+                    </strong> TractorHub Statistics
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <button class="btn btn-white" data-toggle="modal"
@@ -266,7 +266,23 @@
                 <div class="tab-content">
                     <div id="realtime" class="tab-pane fade in active">
                         <div class="row" id="statusCards">
-                            <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" data-background-color="green">
+                                        <i class="material-icons">drafts</i>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Alert</p>
+                                        <h3 class="title" id="alert_status">Yet to be updated</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="stats" id="alert_status_alert">
+                                            <i class="material-icons">update</i> Just Updated
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="green">
                                         <i class="material-icons">local_gas_station</i>
@@ -282,7 +298,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="red">
                                         <i class="material-icons">local_shipping</i>
@@ -298,7 +314,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="card card-stats">
                                     <div class="card-header" data-background-color="blue">
                                         <i class="material-icons">computer</i>
@@ -862,7 +878,9 @@
     });
 
     //update the card details
-    function updateStatusCards(sincetext, fuelstatus, engineStatus, load) {
+    function updateStatusCards(sincetext,alert, fuelstatus, engineStatus, load) {
+        //alert status
+        $("#alert_status").html(alert);
 
         //fuel status
         if (fuelstatus === 0) {
@@ -904,11 +922,16 @@
         if (record) {
             lastKnown = record;
             var sinceText = timeDifference(new Date(), new Date(record.timestamp), false) + " ago";
+            var alert=record.values.alerts;
             var fuelstatus = record.values.fuelUsage;
             var engineStatus = record.values.engineidle;
             var load = record.values.loadWeight;
-            updateStatusCards(sinceText, fuelstatus, engineStatus, load);
+            updateStatusCards(sinceText, alert, fuelstatus, engineStatus, load);
         } else {
+            //alert status
+            $("#alert_status").html("Unknown");
+            $("#alert_status_alert").parent().remove();
+
             //temperature status
             $("#fuel_status").html("Unknown");
             $("#fuel_status_alert").parent().remove();

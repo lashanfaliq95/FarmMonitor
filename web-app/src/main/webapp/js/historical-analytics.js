@@ -369,7 +369,7 @@ analyticsHistory= {
 
         var sumTemp = 0;
         var sumHumid = 0;
-        var sumDewpt=0;
+        var sumEngineTemp = 0;
         var sumTractorSpeed=0;
         var sumRaingin=0;
         var sumFuelUsage=0;
@@ -399,7 +399,7 @@ analyticsHistory= {
             analyticsHistory.historicalIlluminationLabel.length = 0;
             analyticsHistory.historicalIlluminationSeries.length = 0;
 
-            for (var i = 0; i < events.records.length; i++) {
+            for (var i = events.records.length - 1; i >= 0; i--) {
                 var record= events.records[i];
 
                 var sinceText = analyticsHistory.timeDifference(currentTime, new Date(record.timestamp));
@@ -420,7 +420,7 @@ analyticsHistory= {
                 if (humidity)
                     sumHumid += humidity;
                 if (engineTemp)
-                    sumDewpt += engineTemp;
+                    sumEngineTemp += engineTemp;
 
                 if(TractorSpeedmph)
                     sumTractorSpeed +=TractorSpeedmph;
@@ -440,10 +440,10 @@ analyticsHistory= {
                 if(fuelusage)
                     sumFuelUsage+=fuelusage;
 
-                if (i === events.records.length - 1) {
+                if (i === 0) {
                     var avgHumid = sumHumid / events.records.length;
                     var avgTemp = sumTemp / events.records.length;
-                    var avgDewpltf=sumDewpt/events.records.length;
+                    var avgEngineTemp = sumEngineTemp / events.records.length;
                     var avgTractorSpeed=sumTractorSpeed/events.records.length;
                     var avgRaining=sumRaingin/events.records.length;
                     var avgFuelUsage=sumFuelUsage/events.records.length;
@@ -453,7 +453,7 @@ analyticsHistory= {
 
                     $("#historicalTempAlert").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgTemp.toFixed(2) + " </span>average Temperature.");
                     $("#historicalHumidAlert").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgHumid.toFixed(2) + " </span> average Humidity.");
-                    $("#historicalengineTempLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgDewpltf.toFixed(2) + " </span>average Dew point forecast.");
+                    $("#historicalengineTempLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgEngineTemp.toFixed(2) + " </span>average Dew point forecast.");
                      $("#historicaltractorSpeedLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgTractorSpeed.toFixed(2) + " </span>average Wind Speed.");
                      $("#historicalrainingLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgRaining.toFixed(2) + " </span>average Raining.");
                      $("#historicalFuelUsageLastUpdated").html("<span class=\"text-success\"><i class=\"fa fa-bolt\"></i> " + avgFuelUsage.toFixed(2) + " </span>average Daily Raining.");

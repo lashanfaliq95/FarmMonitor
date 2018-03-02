@@ -325,7 +325,6 @@
         var devicesListing = $('#devices-listing');
 
         var lastKnownSuccess = function (data) {
-
             var records = JSON.parse(data);
             var record = JSON.parse(data).records[0];
 
@@ -341,7 +340,7 @@
 
             var myRow;
             if (temperature == null || humidity == null || raining == null) {
-                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">wallpaper</i> </div> <div class=\"card-content\"> <p class=\"category\">Farm</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
+                myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">nature</i> </div> <div class=\"card-content\"> <p class=\"category\">Farm</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalTempChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalHumidityChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalrainingChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalrainingAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
@@ -691,14 +690,13 @@
             this["historicalrainingLabel" + deviceId].length = 0;
             this["historicalrainingSeries" + deviceId].length = 0;
 
-            for (var i = 0; i < events.records.length; i++) {
+            for (var i = events.records.length-1; i >=0 ; i--) { //invert the results so final record comes last
 
                 var record = events.records[i];
 
                 var sinceText = timeDifference(currentTime, new Date(record.timestamp));
                 var dataPoint = record.values;
                 var temperature = dataPoint.temperature;
-                temperature = ((temperature - 32) * 5) / 9;
                 var humidity = dataPoint.humidity;
                 var rain = dataPoint.raining;
 

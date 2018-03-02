@@ -355,7 +355,6 @@ realtimeAnalytics = {
             if (ws) {
 
                 ws.onmessage = function (event) {
-                    console.log('data');
                     var data = event.data;
                     var dataPoint = JSON.parse(data).event.payloadData;
                     var temperature = dataPoint.temperature;
@@ -368,10 +367,11 @@ realtimeAnalytics = {
                     var Illumination = dataPoint.illumination;
                     var fuelUsage = dataPoint.fuelUsage;
                     var engineIdlingstatus = dataPoint.engineidle;
+                    var alert = dataPoint.alerts;
 
                     var currentTime = new Date();
                     var sinceText = timeDifference(currentTime, new Date(dataPoint.timeStamp), false) + " ago";
-                    updateStatusCards(sinceText, fuelUsage, engineIdlingstatus, tractorLoadWeight);
+                    updateStatusCards(sinceText, alert, fuelUsage, engineIdlingstatus, tractorLoadWeight);
 
                     var lastUpdatedTime = realtimeTempLabelRef[realtimeTempLabelRef.length - 1];
                     var lastUpdatedText = "<i class=\"material-icons\">access_time</i> updated " + timeDifference(currentTime, lastUpdatedTime) + " ago";
